@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -97,6 +98,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemViewHolder
             // init final position for on click
             holder.addBtn.setOnClickListener(v -> {
                 viewModel.addItem(item);
+                Toast.makeText(context, "Added item " + item.getName() + " to cart", Toast.LENGTH_SHORT).show();
             });
 
             //TODO: Image and Button

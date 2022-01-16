@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -156,6 +157,6 @@ public class ItemDetailsFragment extends Fragment {
         if (item == null) return;
         ItemViewModel viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         viewModel.addItem(item);
-//        Toast.makeText(requireContext(), "Added item " + item.getName() + " to cart", Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), "Added item " + item.getName() + " to cart", Toast.LENGTH_SHORT).show();
     }
 }

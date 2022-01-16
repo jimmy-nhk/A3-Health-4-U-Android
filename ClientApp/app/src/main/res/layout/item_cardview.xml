@@ -44,54 +44,63 @@
             <TextView
                 android:id="@+id/itemName"
                 android:layout_width="match_parent"
-                android:layout_height="24dp"
+                android:layout_height="wrap_content"
+                android:maxHeight="38dp"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/primary_blue_light"
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:text="Item name"/>
-
-            <TextView
-                android:id="@+id/itemVendorName"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginTop="8dp"
-                android:text="Vendor Name"/>
-
-            <TextView
-                android:id="@+id/itemCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginTop="4dp"
-                android:text="Food Category"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
-                <TextView
-                    android:id="@+id/itemPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:text="10$"/>
-
+                android:orientation="horizontal">
                 <LinearLayout
-                    android:id="@+id/addItem"
-                    android:layout_width="60dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bordered_container"
-                    android:backgroundTint="@color/primary_blue"
-                    android:clickable="true"
-                    android:gravity="center">
-                    <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/itemVendorName"
                         android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Vendor Name"/>
+
+                    <TextView
+                        android:id="@+id/itemCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Food Category"/>
+
+                    <TextView
+                        android:id="@+id/itemPrice"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_add"
-                        android:contentDescription="@string/add_icon"/>
+                        android:layout_marginTop="4dp"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:text="10$"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom">
+                    <LinearLayout
+                        android:id="@+id/addItem"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/bordered_container"
+                        android:backgroundTint="@color/primary_blue"
+                        android:clickable="true"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_add"
+                            android:contentDescription="@string/add_icon"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
