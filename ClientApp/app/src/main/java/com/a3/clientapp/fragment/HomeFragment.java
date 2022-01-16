@@ -17,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.a3.clientapp.R;
+import com.a3.clientapp.activity.MainActivity;
 import com.a3.clientapp.helper.adapter.CategoryHomeAdapter;
 import com.a3.clientapp.helper.adapter.ItemRecyclerViewAdapter;
 import com.a3.clientapp.helper.adapter.NewStoreRecyclerViewAdapter;
@@ -63,8 +65,9 @@ public class HomeFragment extends Fragment {
     // List
     private String selectedCategory = "";
     private Vendor selectedStore;
-    private boolean isRemind = false;
-    private int remindInterval = 1;
+
+    private int remindInterval ;
+    private Boolean isNotifying;
 
     // Firestore
     private static final String ITEM_COLLECTION = "items";
@@ -74,9 +77,16 @@ public class HomeFragment extends Fragment {
     private CollectionReference itemCollection;
     static private AlarmManager alarmManager;
     static private PendingIntent alarmIntent;
-    static private Boolean isNotifying =false;
+//    private Boolean isNotifying =false;
+    private ReminderCallback mReminderCallback;
+    private NumberPicker numberPicker;
+    public void setReminderCallback(ReminderCallback reminderCallback) {
+        mReminderCallback = reminderCallback;
+    }
 
-
+    private void sendReminderStatus(boolean state, int Interval) {
+        mReminderCallback.onReceiveReminding(state,Interval);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,11 +107,21 @@ public class HomeFragment extends Fragment {
 
     //Init button on click
     private void initHydrationReminder(View view) {
-        updateDrinkingLayout(isNotifying);
+
+        Bundle bundle = this.getArguments();
+
+        // get value from bundle
+        assert bundle != null;
+        isNotifying= bundle.getBoolean("isNotifying");
+        remindInterval= bundle.getInt("interval");
+//        Toast.makeText(getContext(), remindInterval, Toast.LENGTH_SHORT).show();
+        remindIntervalTxt.setText(remindInterval + " minutes");
+        //upd layout from bundle value
+        updateDrinkingLayout(isNotifying,remindInterval);
         isRemindButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateDrinkingLayout(isChecked);
+                updateDrinkingLayout(isChecked,remindInterval);
                 if (isChecked) { // If ischecked, run the alarm intent and show the hydration layout
                     runAlarm(remindInterval);
                 } else {
@@ -114,12 +134,16 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void updateDrinkingLayout(Boolean isChecked) {
+    private void updateDrinkingLayout(Boolean isChecked, int remindInterval) {
         if (isChecked) {
-            isNotifying = true;
+//            Toast.makeText(getContext(), "Enable notification", Toast.LENGTH_SHORT).show();
+            sendReminderStatus(true, remindInterval);
+//            MainActivity.isNotifying = true;
             isDrinkingLayout.setVisibility(View.VISIBLE); //show the hydration layout
         } else {
-            isNotifying = false;
+//            Toast.makeText(getContext(), "Disable notification", Toast.LENGTH_SHORT).show();
+            sendReminderStatus(false,remindInterval);
+//            MainActivity.isNotifying = false;
             isDrinkingLayout.setVisibility(View.GONE); //hide the hydration layout
         }
         isRemindButton.setChecked(isChecked);
@@ -134,17 +158,19 @@ public class HomeFragment extends Fragment {
         d.setView(dialogView);
 
         //Configure Numberpicker
-        final NumberPicker numberPicker = (NumberPicker) dialogView.findViewById(R.id.dialog_number_picker);
-        numberPicker.setValue(20); //set default value as 20
+        numberPicker = (NumberPicker) dialogView.findViewById(R.id.dialog_number_picker);
+        numberPicker.setWrapSelectorWheel(true);
+        numberPicker.setValue(remindInterval); //set default value as 20
         numberPicker.setMaxValue(60); //set max value as 60
         numberPicker.setMinValue(1); //set min value as 1
-        numberPicker.setWrapSelectorWheel(true);
 
         // Check if any value change when numberPicker dialog is popup.
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
                 remindInterval = numberPicker.getValue(); // on value change, set reminder interval to selected number
+                sendReminderStatus(isNotifying, remindInterval);
+
             }
         });
         // Check if the dialog is dismiss
