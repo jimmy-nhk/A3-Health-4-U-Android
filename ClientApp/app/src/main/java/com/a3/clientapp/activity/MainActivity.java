@@ -857,8 +857,6 @@ public class MainActivity extends AppCompatActivity implements ReminderCallback{
 
     @Override
     public void onReceiveReminding(Boolean isReminding, int remindInterval) {
-        Toast.makeText(this,"Update: "+ String.valueOf(isReminding), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this,"Update: "+ String.valueOf(remindInterval), Toast.LENGTH_SHORT).show();
 
         isNotifying=isReminding;
         interval = remindInterval;
