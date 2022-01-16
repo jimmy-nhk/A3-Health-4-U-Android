@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.a3.vendorapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.VendorApp">
+        <activity
+            android:name=".activity.SignUpStep2Activity"
+            android:exported="false" />
+
+        <receiver
+            android:name=".helper.NotificationReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".activity.OrderDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".chat.MessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".chat.MainChatActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity" />
+
+        <service
+            android:name=".helper.NotificationService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="app.com.notifyme.NotificationService" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".activity.AddItemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.SignUpStep1Activity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.LogInActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

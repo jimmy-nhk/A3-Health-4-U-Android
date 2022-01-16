@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue_phantom">#0082c8</color>
+    <color name="red">#b21f1f</color>
+    <color name="green">#63AB62</color>
+    <color name="main_blue">#40beee</color>
+    <color name="yellow">#c4c400</color>
+    <color name="white_transparent">#5FFFFFFF</color>
+    <color name="transparent_100">#00000000</color>
+    <color name="black_transparent">#8F000000</color>
+    <color name="black_transparent_light">#3F000000</color>
+    <color name="yellow_rating_star">#FBC02D</color>
+    <color name="grey">#707070</color>
+    <color name="transparent">#00FFFFFF</color>
+
+    <color name="primary_blue">#01579b</color>
+    <color name="primary_blue_light">#4f83cc</color>
+    <color name="primary_blue_dark">#002f6c</color>
+    <color name="primary_blue_light_transparent">#1F4f83cc</color>
+    <color name="primary_blue_dark_transparent">#5F002f6c</color>
+    <color name="secondary_teal">#26a69a</color>
+    <color name="secondary_teal_dark">#64d8cb</color>
+    <color name="secondary_teal_light">#00766c</color>
+</resources>
