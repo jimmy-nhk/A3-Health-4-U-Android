@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +32,7 @@ import com.a3.clientapp.fragment.HistoryFragment;
 import com.a3.clientapp.fragment.HomeFragment;
 import com.a3.clientapp.fragment.ItemListFragment;
 import com.a3.clientapp.fragment.ProfileFragment;
+import com.a3.clientapp.fragment.ReminderCallback;
 import com.a3.clientapp.helper.broadcast.NotificationReceiver;
 import com.a3.clientapp.helper.broadcast.NotificationService;
 import com.a3.clientapp.helper.viewModel.CartViewModel;
@@ -62,7 +64,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ReminderCallback{
     private final String ORDER_COLLECTION = "orders";
     private final String TAG = MainActivity.class.getSimpleName();
     private FragmentTransaction transactionFragment;
@@ -93,9 +95,11 @@ public class MainActivity extends AppCompatActivity {
     public static final String ORDER_NOTIFICATION = "Successfully checked out!\nWaiting for processing!";
     public static final String PROCESS_NOTIFICATION = "Your order is successfully processed!\nCheck it out!";
     public static final String NEW_MESSAGE = "New Message is coming!";
-
+    private Boolean isNotifying =false;
+    private int interval=1;
     private NotificationReceiver notificationReceiver;
     private IntentFilter intentFilter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +129,16 @@ public class MainActivity extends AppCompatActivity {
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationBehavior());
 
+        // add reminder data to fragment
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isNotifying", isNotifying);
+        bundle.putInt("interval", 1);
+        // set Fragmentclass Arguments
+        HomeFragment homeFragment = new HomeFragment();
+        homeFragment.setReminderCallback(this);
+        homeFragment.setArguments(bundle);
         // init home fragment
-        loadFragment(new HomeFragment());
+        loadFragment(homeFragment);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -159,34 +171,39 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-        Fragment fragment;
 
         switch (item.getItemId()) {
             case R.id.homePageNav:
-                fragment = new HomeFragment();
-                loadFragmentWithBackStack(fragment);
+
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("isNotifying", isNotifying);
+                bundle.putInt("interval", interval);
+                HomeFragment homeFragment = new HomeFragment();
+                homeFragment.setReminderCallback(this);
+                homeFragment.setArguments(bundle);
+                loadFragment(homeFragment);
                 return true;
             case R.id.itemsNav:
-                fragment = new ItemListFragment();
+                ItemListFragment itemListFragment = new ItemListFragment();
                 // Put item in bundle to send to ItemDetails fragment
-                // send the string to ItemList Fragment
+                // send the string to ItemList itemListFragment
                 try {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("category", selectedCategory);
-                    fragment.setArguments(bundle);
-                    loadFragmentWithBackStack(fragment);
+                    Bundle fragmentbundle = new Bundle();
+                    fragmentbundle.putString("category", selectedCategory);
+                    itemListFragment.setArguments(fragmentbundle);
+                    loadFragment(itemListFragment);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 return true;
             case R.id.cartNav:
-                fragment = new CartFragment();
-                loadFragmentWithBackStack(fragment);
+                CartFragment cartFragment = new CartFragment();
+                loadFragment(cartFragment);
                 return true;
             case R.id.historyNav:
-                fragment = new HistoryFragment(client.getId());
-                loadFragmentWithBackStack(fragment);
+                HistoryFragment historyFragment = new HistoryFragment(client.getId());
+                loadFragment(historyFragment);
                 return true;
         }
         return false;
@@ -206,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         // load fragment
         transactionFragment = getSupportFragmentManager().beginTransaction();
         transactionFragment.replace(R.id.fragment_container, fragment);
@@ -838,6 +854,16 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> Log.d(TAG, "DocumentSnapshot fail updated status!"));
     }
+
+    @Override
+    public void onReceiveReminding(Boolean isReminding, int remindInterval) {
+        Toast.makeText(this,"Update: "+ String.valueOf(isReminding), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Update: "+ String.valueOf(remindInterval), Toast.LENGTH_SHORT).show();
+
+        isNotifying=isReminding;
+        interval = remindInterval;
+    }
+
 }
 
 class BottomNavigationBehavior extends CoordinatorLayout.Behavior<BottomNavigationView> {
