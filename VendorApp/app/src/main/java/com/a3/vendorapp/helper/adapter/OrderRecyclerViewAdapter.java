@@ -91,7 +91,7 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderViewHold
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
 //        Log.d("OrderRecyclerViewAdapter", "render position: " + position);
         final int GREEN_COLOR = ContextCompat.getColor(context, R.color.green);
-        final int BLACK_COLOR = ContextCompat.getColor(context, R.color.black);
+        final int GREY_COLOR = ContextCompat.getColor(context, R.color.grey);
         final int RED_COLOR = ContextCompat.getColor(context, R.color.red);
 
         Order order = this.orderList.get(position);
@@ -112,7 +112,7 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderViewHold
 
         //check again the text appearance
         holder.announcementTxt.setText(order.getIsProcessed() ? "PROCESSED" : order.getIsCancelled() ? "CANCELLED" : "Not yet process");
-        holder.announcementTxt.setTextColor(order.getIsProcessed() ? GREEN_COLOR : order.getIsCancelled() ? RED_COLOR : BLACK_COLOR);
+        holder.announcementTxt.setTextColor(order.getIsProcessed() ? GREEN_COLOR : order.getIsCancelled() ? RED_COLOR : GREY_COLOR);
 
         holder.cancelBtn.setVisibility(order.getIsProcessed() ? View.GONE : order.getIsCancelled() ? View.GONE : View.VISIBLE);
         holder.processBtn.setVisibility(order.getIsProcessed() ? View.GONE : order.getIsCancelled() ? View.GONE : View.VISIBLE);
